@@ -1,0 +1,54 @@
+@charset 'utf-8';
+// Variables
+@import 'variables';
+@import 'reset';
+
+a{
+  color: inherit;
+  text-decoration: none;
+}
+
+body{
+  height: 100vh;
+  overflow: hidden;
+}
+
+*:focus{
+  outline: none;
+}
+button{
+  background:none;
+  border:none;
+  color:inherit;
+  cursor:pointer;
+  // font-size: 16px;
+}
+
+.under-page{
+  padding-top: 50px;
+  flex: auto;
+}
+
+.l-container{
+  max-width: 1000px;
+  width:96%;
+  margin:0 auto;
+  position: relative;
+}
+
+.markdown-body{
+  ol{
+    list-style: decimal;
+  }
+  ul{
+    list-style:disc;
+  }
+}
+
+@mixin cf(){
+  &::after{
+    content:'';
+    display: block;
+    clear:both;
+  }
+}
