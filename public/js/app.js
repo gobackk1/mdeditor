@@ -2755,7 +2755,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(this.$store.dispatch('auth/logout'));
 
             case 2:
-              this.$store.dispatch('memodata/clearItems');
+              this.clearItems();
               this.$router.push('/');
 
             case 4:
@@ -2768,7 +2768,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     onClickMenuBtn: function onClickMenuBtn() {
       this.toggle('menu');
     }
-  }, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('memodata', ['toggle']))
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('memodata', ['clearItems', 'toggle']))
 });
 
 /***/ }),
@@ -32320,81 +32320,85 @@ var mutations = {
   }
 };
 var actions = {
-  register: function register(context, data) {
-    var response;
+  register: function register(_ref, data) {
+    var commit, res;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function register$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
+            commit = _ref.commit;
+            _context.next = 3;
             return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios.post('/api/register', data));
 
-          case 2:
-            response = _context.sent;
-            context.commit('setUser', response.data);
+          case 3:
+            res = _context.sent;
+            commit('setUser', res.data);
 
-          case 4:
+          case 5:
           case "end":
             return _context.stop();
         }
       }
     });
   },
-  login: function login(context, data) {
-    var response;
+  login: function login(_ref2, data) {
+    var commit, res;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function login$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
+            commit = _ref2.commit;
+            _context2.next = 3;
             return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios.post('/api/login', data));
 
-          case 2:
-            response = _context2.sent;
-            context.commit('setUser', response.data);
+          case 3:
+            res = _context2.sent;
+            commit('setUser', res.data);
 
-          case 4:
+          case 5:
           case "end":
             return _context2.stop();
         }
       }
     });
   },
-  logout: function logout(context) {
-    var response;
+  logout: function logout(_ref3) {
+    var commit, res;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function logout$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _context3.next = 2;
+            commit = _ref3.commit;
+            _context3.next = 3;
             return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios.post('/api/logout'));
 
-          case 2:
-            response = _context3.sent;
-            context.commit('setUser', null);
+          case 3:
+            res = _context3.sent;
+            commit('setUser', null);
 
-          case 4:
+          case 5:
           case "end":
             return _context3.stop();
         }
       }
     });
   },
-  currentUser: function currentUser(context) {
-    var response, user;
+  currentUser: function currentUser(_ref4) {
+    var commit, res, user;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function currentUser$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _context4.next = 2;
+            commit = _ref4.commit;
+            _context4.next = 3;
             return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios.get('/api/user'));
 
-          case 2:
-            response = _context4.sent;
-            user = response.data || null;
-            context.commit('setUser', user);
+          case 3:
+            res = _context4.sent;
+            user = res.data || null;
+            commit('setUser', user);
 
-          case 5:
+          case 6:
           case "end":
             return _context4.stop();
         }
@@ -32430,7 +32434,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var test1 = function test1(index) {
+var setFunc = function setFunc(index) {
   state.category[index].category_has_memo = function () {
     var id = state.category[index].id;
     var items = state.memo.filter(function (i) {
@@ -32498,7 +32502,7 @@ var mutations = {
     console.log(res.memo);
 
     for (var i = 0; state.category.length > i; i++) {
-      test1(i);
+      setFunc(i);
     }
 
     _app__WEBPACK_IMPORTED_MODULE_2__["eventBus"].$emit('init', 'APIから取得完了（initイベント発行）');
@@ -32517,8 +32521,7 @@ var mutations = {
     var index = category.findIndex(function (i) {
       return i.id === data.id;
     });
-    test1(index);
-    console.log(data);
+    setFunc(index);
   },
   updateCategory: function updateCategory(_ref2, item) {
     var category = _ref2.category;
@@ -32526,7 +32529,7 @@ var mutations = {
       return i.id === item.id;
     });
     category[index] = item;
-    test1(index);
+    setFunc(index);
   },
   deleteCategory: function deleteCategory(_ref3, _ref4) {
     var category = _ref3.category,
@@ -32614,60 +32617,129 @@ var actions = {
     commit('setCurrentCategory', id);
   },
   setCategory: function setCategory(_ref15, data) {
-    var commit = _ref15.commit;
-    console.log(data);
-    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/create/category', data).then(function (res) {
-      return commit('storeCategory', res.data);
-    })["catch"](function (e) {
-      return alert(e);
+    var commit, res;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function setCategory$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            commit = _ref15.commit;
+            _context2.next = 3;
+            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/create/category', data));
+
+          case 3:
+            res = _context2.sent;
+            commit('storeCategory', res.data);
+
+          case 5:
+          case "end":
+            return _context2.stop();
+        }
+      }
     });
   },
   updateCategory: function updateCategory(_ref16, item) {
-    var commit = _ref16.commit;
-    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/update/category', item).then(function (res) {
-      return commit('updateCategory', res.data);
-    })["catch"](function (e) {
-      return alert(e);
+    var commit, res;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function updateCategory$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            commit = _ref16.commit;
+            _context3.next = 3;
+            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/update/category', item));
+
+          case 3:
+            res = _context3.sent;
+            commit('updateCategory', res.data);
+
+          case 5:
+          case "end":
+            return _context3.stop();
+        }
+      }
     });
   },
   deleteCategory: function deleteCategory(_ref17, category) {
-    var commit = _ref17.commit;
-    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/delete/category', category).then(function (res) {
-      return commit('deleteCategory', res.data);
-    })["catch"](function (e) {
-      return alert(e);
+    var commit, res;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function deleteCategory$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            commit = _ref17.commit;
+            _context4.next = 3;
+            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/delete/category', category));
+
+          case 3:
+            res = _context4.sent;
+            commit('deleteCategory', res.data);
+
+          case 5:
+          case "end":
+            return _context4.stop();
+        }
+      }
     });
   },
   createItem: function createItem(_ref18, item) {
-    var commit = _ref18.commit;
-    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/create/memo', item).then(function (res) {
-      return commit('storeItem', res.data);
-    })["catch"](function (e) {
-      return alert(e);
+    var commit, res;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function createItem$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            commit = _ref18.commit;
+            _context5.next = 3;
+            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/create/memo', item));
+
+          case 3:
+            res = _context5.sent;
+            commit('storeItem', res.data);
+
+          case 5:
+          case "end":
+            return _context5.stop();
+        }
+      }
     });
   },
   updateItem: function updateItem(_ref19, item) {
-    var commit = _ref19.commit;
-    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/update/memo', item).then(function (res) {
-      return commit('updateItem', res.data);
-    })["catch"](function (e) {
-      return alert(e);
+    var commit, res;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function updateItem$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            commit = _ref19.commit;
+            _context6.next = 3;
+            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/update/memo', item));
+
+          case 3:
+            res = _context6.sent;
+            commit('updateItem', res.data);
+
+          case 5:
+          case "end":
+            return _context6.stop();
+        }
+      }
     });
   },
-  // deleteItem({ commit }, id){
-  //   const req = {
-  //     id: id
-  //   }
-  //   axios.post('/api/delete/memo', req)
-  //     .then(res => commit('deleteItem', res.data))
-  //     .catch(e => alert(e))
-  // },
   clearTrash: function clearTrash(_ref20, items) {
-    var commit = _ref20.commit;
-    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/clear/trash', items).then(function (res) {
-      return commit('clearTrash', items);
-    })["catch"](function (e) {
-      return alert(e);
+    var commit, res;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function clearTrash$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            commit = _ref20.commit;
+            _context7.next = 3;
+            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/clear/trash', items));
+
+          case 3:
+            res = _context7.sent;
+            commit('clearTrash', items);
+
+          case 5:
+          case "end":
+            return _context7.stop();
+        }
+      }
     });
   },
   toggle: function toggle(_ref21, key) {
@@ -32734,10 +32806,7 @@ function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) ||
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function getCookieValue(searchKey) {
-  if (typeof searchKey === 'undefined') {
-    return '';
-  }
-
+  if (typeof searchKey === 'undefined') return '';
   var val = '';
   document.cookie.split(';').forEach(function (cookie) {
     var _cookie$split = cookie.split('='),

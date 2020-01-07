@@ -44,14 +44,15 @@
     methods:{
       async logout () {
         await this.$store.dispatch('auth/logout')
-        this.$store.dispatch('memodata/clearItems')
+        this.clearItems()
         this.$router.push('/')
       },
       onClickMenuBtn(){
         this.toggle('menu')
       },
       ...mapActions('memodata', [
-        'toggle'
+        'clearItems',
+        'toggle',
       ])
     },
   }

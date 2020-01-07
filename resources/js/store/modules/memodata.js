@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { eventBus } from '../../app'
 
-const test1 = index =>{
+const setFunc = index =>{
   state.category[index].category_has_memo = () => {
     const id = state.category[index].id
     const items = state.memo.filter(i => i.category_id == id && i.memo_is_trash == false)
@@ -48,7 +48,7 @@ const mutations = {
     console.log('memo')
     console.log(res.memo)
     for(let i = 0; state.category.length > i; i++){
-      test1(i)
+      setFunc(i)
     }
     eventBus.$emit('init', 'APIから取得完了（initイベント発行）')
   },
@@ -63,14 +63,12 @@ const mutations = {
   storeCategory({ category }, data){
     category.push(data)
     const index = category.findIndex(i => i.id === data.id)
-    test1(index)
-    console.log(data);
-
+    setFunc(index)
   },
   updateCategory({ category }, item){
     const index = category.findIndex(i => i.id === item.id)
     category[index] = item
-    test1(index)
+    setFunc(index)
   },
   deleteCategory({ category, memo }, { id }){
     const index = category.findIndex(i => i.id === id)
@@ -118,45 +116,29 @@ const actions = {
   setCurrentCategory({ commit },id){
     commit('setCurrentCategory',id)
   },
-  setCategory({ commit }, data){
-    console.log(data);
-
-    axios.post('/api/create/category',data)
-      .then(res => commit('storeCategory', res.data))
-      .catch(e => alert(e))
+  async setCategory({ commit }, data){
+    const res = await axios.post('/api/create/category',data)
+    commit('storeCategory', res.data)
   },
-  updateCategory({ commit }, item){
-    axios.post('/api/update/category', item)
-      .then(res => commit('updateCategory', res.data))
-      .catch(e => alert(e))
+  async updateCategory({ commit }, item){
+    const res = await axios.post('/api/update/category', item)
+    commit('updateCategory', res.data)
   },
-  deleteCategory({ commit }, category){
-    axios.post('/api/delete/category', category)
-      .then(res => commit('deleteCategory', res.data))
-      .catch(e => alert(e))
+  async deleteCategory({ commit }, category){
+    const res = await axios.post('/api/delete/category', category)
+    commit('deleteCategory', res.data)
   },
-  createItem({ commit }, item){
-    axios.post('/api/create/memo', item)
-      .then(res => commit('storeItem', res.data))
-      .catch(e => alert(e))
+  async createItem({ commit }, item){
+    const res = await axios.post('/api/create/memo', item)
+    commit('storeItem', res.data)
   },
-  updateItem({ commit }, item){
-    axios.post('/api/update/memo', item)
-      .then(res => commit('updateItem', res.data))
-      .catch(e => alert(e))
+  async updateItem({ commit }, item){
+    const res = await axios.post('/api/update/memo', item)
+    commit('updateItem', res.data)
   },
-  // deleteItem({ commit }, id){
-  //   const req = {
-  //     id: id
-  //   }
-  //   axios.post('/api/delete/memo', req)
-  //     .then(res => commit('deleteItem', res.data))
-  //     .catch(e => alert(e))
-  // },
-  clearTrash({ commit }, items){
-    axios.post('/api/clear/trash', items)
-      .then( res => commit('clearTrash', items))
-      .catch(e => alert(e))
+  async clearTrash({ commit }, items){
+    const res = await axios.post('/api/clear/trash', items)
+    commit('clearTrash', items)
   },
   toggle({ commit }, key){
     commit('toggle', key)

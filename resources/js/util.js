@@ -1,7 +1,5 @@
 export function getCookieValue (searchKey) {
-  if (typeof searchKey === 'undefined') {
-    return ''
-  }
+  if (typeof searchKey === 'undefined') return ''
 
   let val = ''
 
