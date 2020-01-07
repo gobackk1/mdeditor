@@ -7,6 +7,3 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 /vendor
-composer.json
-composer.lock
-composer.phar
