@@ -44,6 +44,8 @@ export default {
         edit:false,
         folder:false
       },
+      beforeName:'',
+      afterName:'',
     }
   },
   props:{
@@ -71,12 +73,16 @@ export default {
     },
     editButton(category, ev){
       this.toggle.edit = !this.toggle.edit
-      if(!this.toggle.edit) {
-        this.updateCategory(category)
-      } else {
+      if(this.toggle.edit) {
+        this.beforeName = category.category_name
         this.$nextTick(() => {
           ev.target.parentElement.querySelector('[name="name"]').focus()
         })
+      } else {
+        this.afterName = category.category_name
+        if (this.beforeName !== this.afterName){
+          this.updateCategory(category)
+        }
       }
     },
     onKeyDownEnter(ev){
