@@ -1919,8 +1919,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       toggle: {
         edit: false,
         folder: false
-      },
-      color: '#ffffff'
+      }
     };
   },
   props: {
@@ -2026,30 +2025,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   created: function created() {
     this.fetchData = this.$store.state.memodata;
+    this.setActiveData();
   },
   mounted: function mounted() {
     var _this = this;
 
-    this.setActiveData();
     _app__WEBPACK_IMPORTED_MODULE_2__["eventBus"].$on('item', function () {
       _this.setActiveData();
     });
   },
-  // computed:{
-  //   activeData(){
-  //     const key = this.$route.params.id
-  //     let items
-  //     if(key === 'fav' || key === 'trash'){
-  //       const k = `memo_is_${key}`
-  //       items = this.fetchData.memo.filter(i => i[k] == true)
-  //     } else if(key === 'all') {
-  //       items = this.fetchData.memo.filter(i => i.memo_is_trash == false)
-  //     } else {
-  //       items = this.fetchData.memo.filter(i => i.category_id == key && i.memo_is_trash == false)
-  //     }
-  //     return items
-  //   }
-  // },
   computed: {
     activeId: function activeId() {
       return this.fetchData.currentItem ? this.fetchData.currentItem.id : 0;
@@ -2058,14 +2042,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: _objectSpread({
     setActiveData: function setActiveData() {
       this.activeData = this.$store.getters['memodata/getDataByKey'](this.$route.params.id);
-    },
-    registerEventListener: function registerEventListener() {// const search = document.querySelector('.editor__search')
-      // search.addEventListener('focus', () => {
-      //   this.searching = true
-      // })
-      // search.addEventListener('blur', () => {
-      //   this.searching = false
-      // })
     },
     onClickItem: function onClickItem(item) {
       this.setCurrentItem(item);
@@ -2255,16 +2231,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2277,23 +2243,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   created: function created() {
     this.fetchData = this.$store.state.memodata;
   },
-  mounted: function mounted() {// eventBus.$on('init', e => {
-    //   this.fetchData = this.$store.state.memodata
-    // })
-  },
-  watch: {// '$route' (to, from){
-    //   this.fetchData = this.$store.state.memodata
-    // }
-  },
-  computed: {
-    isFavorite: function isFavorite() {
-      return this.$store.getters['memodata/isFavorite'];
-    },
-    isTrash: function isTrash() {
-      return this.$store.getters['memodata/isTrash'];
-    }
-  },
+  // computed:{
+  //   checkCurrentItemProps(){
+  //     return (key, trueClazz, falseClazz) => {
+  //       let clazz
+  //       if(this.$store.getters['memodata/checkCurrentItemProps'](key) == true){
+  //         clazz = trueClazz
+  //       } else {
+  //         clazz = falseClazz
+  //       }
+  //       console.log('computed')
+  //       return clazz
+  //     }
+  //   },
+  // },
   methods: _objectSpread({
+    checkCurrentItemProps: function checkCurrentItemProps(key, trueClazz, falseClazz) {
+      var clazz;
+
+      if (this.$store.getters['memodata/checkCurrentItemProps'](key) == true) {
+        clazz = trueClazz;
+      } else {
+        clazz = falseClazz;
+      }
+
+      console.log('methods');
+      return clazz;
+    },
     onClickEdit: function onClickEdit(id) {
       this.toggle('editor');
       this.editItem(id);
@@ -2333,11 +2309,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /*!**************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/home/Home.vue?vue&type=script&lang=js& ***!
   \**************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
 //
 //
 //
@@ -2365,14 +2339,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
-  }
-});
 
 /***/ }),
 
@@ -2470,7 +2436,6 @@ __webpack_require__.r(__webpack_exports__);
               return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(this.$store.dispatch('auth/register', this.registerForm));
 
             case 2:
-              // トップページに移動する
               this.$router.push('/Category');
 
             case 3:
@@ -2494,7 +2459,7 @@ __webpack_require__.r(__webpack_exports__);
                 id: null
               };
               req.id = this.$store.getters['auth/userId'];
-              this.afterAjax(req);
+              this.fetchItems(req);
 
             case 5:
             case "end":
@@ -2503,8 +2468,8 @@ __webpack_require__.r(__webpack_exports__);
         }
       }, null, this);
     },
-    afterAjax: function afterAjax(req) {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function afterAjax$(_context3) {
+    fetchItems: function fetchItems(req) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function fetchItems$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
@@ -2583,49 +2548,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      fetchData: {}
+      fetchData: {},
+      categoryTotal: [{
+        id: 'all',
+        key: 'all',
+        label: 'All'
+      }, {
+        id: 'fav',
+        key: 'memo_is_fav',
+        label: 'Favorite'
+      }, {
+        id: 'trash',
+        key: 'memo_is_trash',
+        label: 'Trash'
+      }]
     };
   },
   created: function created() {
     this.fetchData = this.$store.state.memodata;
   },
-  updated: function updated() {
-    console.log('親のアップデート呼び出し');
-  },
   computed: {
-    numberOfAll: function numberOfAll() {
-      return this.getTotalNumberByKey('all');
-    },
-    numberOfFav: function numberOfFav() {
-      return this.getTotalNumberByKey('memo_is_fav');
-    },
-    numberOfTrash: function numberOfTrash() {
-      return this.getTotalNumberByKey('memo_is_trash');
-    },
     btnDisabledFrag: function btnDisabledFrag() {
       return this.$store.getters['auth/checkLog'] ? false : true;
     }
   },
   methods: _objectSpread({
-    createCategory: function createCategory() {
-      var categoryName = prompt('カテゴリー名を入力して下さい。');
-
-      if (categoryName) {
-        var req = {
-          name: categoryName,
-          userId: this.$store.getters['auth/userId']
-        };
-        this.setCategory(req);
-      }
-    },
     getTotalNumberByKey: function getTotalNumberByKey(key) {
       if (!this.$store.state.memodata.category) {
         return 0;
@@ -2649,15 +2602,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       return counter;
     },
+    createCategory: function createCategory() {
+      var categoryName = prompt('カテゴリー名を入力して下さい。');
+
+      if (categoryName) {
+        var req = {
+          name: categoryName,
+          userId: this.$store.getters['auth/userId']
+        };
+        this.setCategory(req);
+      }
+    },
     toggleNav: function toggleNav() {
       this.toggle('nav');
     },
-    onRightClickTrash: function onRightClickTrash() {
+    onRightClick: function onRightClick(key) {
+      if (key !== 'memo_is_trash') return;
+
       if (confirm('ゴミ箱のメモを全て削除してよろしいですか？')) {
-        var clearItems = this.fetchData.memo.filter(function (i) {
-          return i.memo_is_trash == true;
-        });
-        this.clearTrash(clearItems);
+        this.clearTrash();
       }
     },
     onClickTotalLink: function onClickTotalLink() {
@@ -14100,7 +14063,7 @@ var render = function() {
                 name: "show",
                 rawName: "v-show",
                 value: _vm.activeId === memo.id,
-                expression: " activeId === memo.id"
+                expression: "activeId === memo.id"
               }
             ],
             key: memo.id,
@@ -14186,10 +14149,11 @@ var render = function() {
       "button",
       {
         staticClass: "toolbar__btn--fav",
-        class: {
-          "_fav-is-true": _vm.isFavorite == true,
-          "_fav-is-false": _vm.isFavorite == false
-        },
+        class: _vm.checkCurrentItemProps(
+          "memo_is_fav",
+          "_fav-is-true",
+          "_fav-is-false"
+        ),
         attrs: { type: "button" },
         on: {
           click: function($event) {
@@ -14200,10 +14164,7 @@ var render = function() {
       [
         _c("i", {
           staticClass: "fa-star fa-lg",
-          class: {
-            fas: _vm.isFavorite == true,
-            far: _vm.isFavorite == false
-          }
+          class: _vm.checkCurrentItemProps("memo_is_fav", "fas", "far")
         })
       ]
     ),
@@ -14212,10 +14173,11 @@ var render = function() {
       "button",
       {
         staticClass: "toolbar__btn--del",
-        class: {
-          "_trash-is-true": _vm.isTrash == true,
-          "_trash-is-false": _vm.isTrash == false
-        },
+        class: _vm.checkCurrentItemProps(
+          "memo_is_trash",
+          "_trash-is-true",
+          "_trash-is-false"
+        ),
         attrs: { type: "button" },
         on: {
           click: function($event) {
@@ -14342,7 +14304,9 @@ var staticRenderFns = [
         _c("h3", [_vm._v("リンク")]),
         _vm._v(" "),
         _c("p", [
-          _c("a", { attrs: { href: "" } }, [_vm._v("ソースコード(GitHub)")]),
+          _c("a", { attrs: { href: "https://github.com/gobackk1/mdeditor" } }, [
+            _vm._v("ソースコード(GitHub)")
+          ]),
           _vm._v("、"),
           _c("a", { attrs: { href: "https://boostnote.io/" } }, [
             _vm._v("BoostNote")
@@ -14807,81 +14771,45 @@ var render = function() {
     },
     [
       _c("nav", { staticClass: "nav" }, [
-        _c("ul", { staticClass: "nav__head nav-total" }, [
-          _c(
-            "li",
-            { on: { click: _vm.onClickTotalLink } },
-            [
-              _c(
-                "RouterLink",
-                {
-                  staticClass: "nav-total__link",
-                  attrs: {
-                    to: { name: "Category", params: { id: "all" } },
-                    id: "btn-all"
+        _c(
+          "ul",
+          { staticClass: "nav__head nav-total" },
+          _vm._l(_vm.categoryTotal, function(total) {
+            return _c(
+              "li",
+              {
+                key: total.elid,
+                on: {
+                  click: _vm.onClickTotalLink,
+                  contextmenu: function($event) {
+                    $event.preventDefault()
+                    return _vm.onRightClick(total.key)
                   }
-                },
-                [
-                  _vm._v("\n          All"),
-                  _c("div", { staticClass: "nav-total__num" }, [
-                    _vm._v(_vm._s(_vm.numberOfAll))
-                  ])
-                ]
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            { on: { click: _vm.onClickTotalLink } },
-            [
-              _c(
-                "RouterLink",
-                {
-                  staticClass: "nav-total__link",
-                  attrs: { to: { name: "Category", params: { id: "fav" } } }
-                },
-                [
-                  _vm._v("\n          Favorite"),
-                  _c("div", { staticClass: "nav-total__num" }, [
-                    _vm._v(_vm._s(_vm.numberOfFav))
-                  ])
-                ]
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              on: {
-                click: _vm.onClickTotalLink,
-                contextmenu: function($event) {
-                  $event.preventDefault()
-                  return _vm.onRightClickTrash($event)
                 }
-              }
-            },
-            [
-              _c(
-                "RouterLink",
-                {
-                  staticClass: "nav-total__link",
-                  attrs: { to: { name: "Category", params: { id: "trash" } } }
-                },
-                [
-                  _vm._v("\n          Trash"),
-                  _c("div", { staticClass: "nav-total__num" }, [
-                    _vm._v(_vm._s(_vm.numberOfTrash))
-                  ])
-                ]
-              )
-            ],
-            1
-          )
-        ]),
+              },
+              [
+                _c(
+                  "RouterLink",
+                  {
+                    staticClass: "nav-total__link",
+                    attrs: {
+                      to: { name: "Category", params: { id: total.id } },
+                      id: "btn-" + total.id
+                    }
+                  },
+                  [
+                    _vm._v(_vm._s(total.label)),
+                    _c("div", { staticClass: "nav-total__num" }, [
+                      _vm._v(_vm._s(_vm.getTotalNumberByKey(total.key)))
+                    ])
+                  ]
+                )
+              ],
+              1
+            )
+          }),
+          0
+        ),
         _vm._v(" "),
         _c("div", { staticClass: "nav__body" }, [
           _c("h2", { staticClass: "nav__ttl" }, [_vm._v("CategoryList")]),
@@ -14891,11 +14819,7 @@ var render = function() {
             {
               staticClass: "create-category",
               attrs: { type: "button", disabled: _vm.btnDisabledFrag },
-              on: {
-                click: function($event) {
-                  return _vm.createCategory()
-                }
-              }
+              on: { click: _vm.createCategory }
             },
             [_c("i", { staticClass: "fas fa-plus fa-lg" })]
           ),
@@ -31791,14 +31715,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************************************!*\
   !*** ./resources/js/components/pages/home/Home.vue ***!
   \*****************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Home_vue_vue_type_template_id_43ca9a29___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Home.vue?vue&type=template&id=43ca9a29& */ "./resources/js/components/pages/home/Home.vue?vue&type=template&id=43ca9a29&");
 /* harmony import */ var _Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Home.vue?vue&type=script&lang=js& */ "./resources/js/components/pages/home/Home.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -31828,13 +31753,15 @@ component.options.__file = "resources/js/components/pages/home/Home.vue"
 /*!******************************************************************************!*\
   !*** ./resources/js/components/pages/home/Home.vue?vue&type=script&lang=js& ***!
   \******************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Home.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/home/Home.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -32462,11 +32389,10 @@ var getters = {
       });
     };
   },
-  isFavorite: function isFavorite(state) {
-    return state.currentItem ? state.currentItem.memo_is_fav : false;
-  },
-  isTrash: function isTrash(state) {
-    return state.currentItem ? state.currentItem.memo_is_trash : false;
+  checkCurrentItemProps: function checkCurrentItemProps(state) {
+    return function (key) {
+      return state.currentItem ? state.currentItem[key] : false;
+    };
   },
   getDataByKey: function getDataByKey(state) {
     return function (key) {
@@ -32567,29 +32493,25 @@ var mutations = {
     memo.splice(index, 1);
     _app__WEBPACK_IMPORTED_MODULE_2__["eventBus"].$emit('item', 'deleted');
   },
-  clearTrash: function clearTrash(_ref9, items) {
-    var memo = _ref9.memo;
-    items.forEach(function (item) {
-      var index = memo.findIndex(function (i) {
-        return i.id === item.id;
-      });
-      memo.splice(index, 1);
+  clearTrash: function clearTrash(state) {
+    var result = state.memo.filter(function (i) {
+      return i.memo_is_trash == false;
     });
-    _app__WEBPACK_IMPORTED_MODULE_2__["eventBus"].$emit('item', 'cleared');
+    state.memo = result;
   },
-  toggle: function toggle(_ref10, key) {
-    var _toggle = _ref10.toggle;
+  toggle: function toggle(_ref9, key) {
+    var _toggle = _ref9.toggle;
     _toggle[key] = !_toggle[key];
   }
 };
 var actions = {
-  fetchItems: function fetchItems(_ref11, id) {
+  fetchItems: function fetchItems(_ref10, id) {
     var commit, res;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function fetchItems$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            commit = _ref11.commit;
+            commit = _ref10.commit;
             _context.next = 3;
             return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/userdata', id));
 
@@ -32604,25 +32526,25 @@ var actions = {
       }
     });
   },
-  clearItems: function clearItems(_ref12) {
-    var commit = _ref12.commit;
+  clearItems: function clearItems(_ref11) {
+    var commit = _ref11.commit;
     commit('clearItems');
   },
-  setCurrentItem: function setCurrentItem(_ref13, item) {
-    var commit = _ref13.commit;
+  setCurrentItem: function setCurrentItem(_ref12, item) {
+    var commit = _ref12.commit;
     commit('setCurrentItem', item);
   },
-  setCurrentCategory: function setCurrentCategory(_ref14, id) {
-    var commit = _ref14.commit;
+  setCurrentCategory: function setCurrentCategory(_ref13, id) {
+    var commit = _ref13.commit;
     commit('setCurrentCategory', id);
   },
-  setCategory: function setCategory(_ref15, data) {
+  setCategory: function setCategory(_ref14, data) {
     var commit, res;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function setCategory$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            commit = _ref15.commit;
+            commit = _ref14.commit;
             _context2.next = 3;
             return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/create/category', data));
 
@@ -32637,13 +32559,13 @@ var actions = {
       }
     });
   },
-  updateCategory: function updateCategory(_ref16, item) {
+  updateCategory: function updateCategory(_ref15, item) {
     var commit, res;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function updateCategory$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            commit = _ref16.commit;
+            commit = _ref15.commit;
             _context3.next = 3;
             return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/update/category', item));
 
@@ -32658,13 +32580,13 @@ var actions = {
       }
     });
   },
-  deleteCategory: function deleteCategory(_ref17, category) {
+  deleteCategory: function deleteCategory(_ref16, category) {
     var commit, res;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function deleteCategory$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            commit = _ref17.commit;
+            commit = _ref16.commit;
             _context4.next = 3;
             return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/delete/category', category));
 
@@ -32679,13 +32601,13 @@ var actions = {
       }
     });
   },
-  createItem: function createItem(_ref18, item) {
+  createItem: function createItem(_ref17, item) {
     var commit, res;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function createItem$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            commit = _ref18.commit;
+            commit = _ref17.commit;
             _context5.next = 3;
             return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/create/memo', item));
 
@@ -32700,13 +32622,13 @@ var actions = {
       }
     });
   },
-  updateItem: function updateItem(_ref19, item) {
+  updateItem: function updateItem(_ref18, item) {
     var commit, res;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function updateItem$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            commit = _ref19.commit;
+            commit = _ref18.commit;
             _context6.next = 3;
             return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/update/memo', item));
 
@@ -32721,19 +32643,19 @@ var actions = {
       }
     });
   },
-  clearTrash: function clearTrash(_ref20, items) {
+  clearTrash: function clearTrash(_ref19) {
     var commit, res;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function clearTrash$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            commit = _ref20.commit;
+            commit = _ref19.commit;
             _context7.next = 3;
-            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/clear/trash', items));
+            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/clear/trash'));
 
           case 3:
             res = _context7.sent;
-            commit('clearTrash', items);
+            commit('clearTrash');
 
           case 5:
           case "end":
@@ -32742,8 +32664,8 @@ var actions = {
       }
     });
   },
-  toggle: function toggle(_ref21, key) {
-    var commit = _ref21.commit;
+  toggle: function toggle(_ref20, key) {
+    var commit = _ref20.commit;
     commit('toggle', key);
   }
 };

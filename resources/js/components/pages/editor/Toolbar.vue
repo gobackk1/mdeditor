@@ -1,26 +1,16 @@
 <template>
   <div class="toolbar">
-    <!-- <div class="toolbar__category">{{ }} &gt; {{  }}</div> -->
     <button
       class="toolbar__btn--fav"
-      :class="{
-        '_fav-is-true': isFavorite == true,
-        '_fav-is-false': isFavorite == false,
-      }"
+      :class="checkCurrentItemProps('memo_is_fav', '_fav-is-true', '_fav-is-false')"
       type="button"
       @click="onClickFav(fetchData.currentItem.id)"
     >
-      <i class="fa-star fa-lg" :class="{
-        'fas': isFavorite == true,
-        'far': isFavorite == false,
-      }"></i>
+      <i class="fa-star fa-lg" :class="checkCurrentItemProps('memo_is_fav', 'fas', 'far')"></i>
     </button>
     <button
       class="toolbar__btn--del"
-      :class="{
-        '_trash-is-true': isTrash == true,
-        '_trash-is-false': isTrash == false,
-      }"
+      :class="checkCurrentItemProps('memo_is_trash', '_trash-is-true', '_trash-is-false')"
       type="button"
       @click="onClickTrash(fetchData.currentItem.id)"
     >
@@ -46,25 +36,31 @@
     created(){
       this.fetchData = this.$store.state.memodata
     },
-    mounted(){
-      // eventBus.$on('init', e => {
-      //   this.fetchData = this.$store.state.memodata
-      // })
-    },
-    watch:{
-      // '$route' (to, from){
-      //   this.fetchData = this.$store.state.memodata
-      // }
-    },
-    computed:{
-      isFavorite(){
-        return this.$store.getters['memodata/isFavorite']
-      },
-      isTrash(){
-        return this.$store.getters['memodata/isTrash']
-      },
-    },
+    // computed:{
+    //   checkCurrentItemProps(){
+    //     return (key, trueClazz, falseClazz) => {
+    //       let clazz
+    //       if(this.$store.getters['memodata/checkCurrentItemProps'](key) == true){
+    //         clazz = trueClazz
+    //       } else {
+    //         clazz = falseClazz
+    //       }
+    //       console.log('computed')
+    //       return clazz
+    //     }
+    //   },
+    // },
     methods:{
+      checkCurrentItemProps(key, trueClazz, falseClazz){
+        let clazz
+        if(this.$store.getters['memodata/checkCurrentItemProps'](key) == true){
+          clazz = trueClazz
+        } else {
+          clazz = falseClazz
+        }
+        console.log('methods')
+        return clazz
+      },
       onClickEdit(id){
         this.toggle('editor')
         this.editItem(id)
@@ -79,7 +75,6 @@
           ? item.memo_is_trash = true
           : item.memo_is_trash = !item.memo_is_trash
         this.updateItem(item)
-
         const items = this.$store.getters['memodata/getDataByKey'](this.$route.params.id)
         this.setCurrentItem(items[0])
       },

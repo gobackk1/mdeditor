@@ -44,28 +44,13 @@ export default {
   },
   created(){
     this.fetchData = this.$store.state.memodata
+    this.setActiveData()
   },
   mounted(){
-    this.setActiveData()
     eventBus.$on('item', () =>{
       this.setActiveData()
     })
   },
-  // computed:{
-  //   activeData(){
-  //     const key = this.$route.params.id
-  //     let items
-  //     if(key === 'fav' || key === 'trash'){
-  //       const k = `memo_is_${key}`
-  //       items = this.fetchData.memo.filter(i => i[k] == true)
-  //     } else if(key === 'all') {
-  //       items = this.fetchData.memo.filter(i => i.memo_is_trash == false)
-  //     } else {
-  //       items = this.fetchData.memo.filter(i => i.category_id == key && i.memo_is_trash == false)
-  //     }
-  //     return items
-  //   }
-  // },
   computed:{
     activeId(){
       return this.fetchData.currentItem ? this.fetchData.currentItem.id : 0
@@ -74,15 +59,6 @@ export default {
   methods:{
     setActiveData(){
       this.activeData = this.$store.getters['memodata/getDataByKey'](this.$route.params.id)
-    },
-    registerEventListener(){
-      // const search = document.querySelector('.editor__search')
-      // search.addEventListener('focus', () => {
-      //   this.searching = true
-      // })
-      // search.addEventListener('blur', () => {
-      //   this.searching = false
-      // })
     },
     onClickItem(item){
       this.setCurrentItem(item)

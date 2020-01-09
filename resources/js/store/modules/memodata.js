@@ -22,8 +22,7 @@ const state = {
 
 const getters = {
   getItemById: state => id => state.memo.find(i => i.id === id),
-  isFavorite: state => state.currentItem ? state.currentItem.memo_is_fav : false,
-  isTrash: state => state.currentItem ? state.currentItem.memo_is_trash : false,
+  checkCurrentItemProps: state => key => state.currentItem ? state.currentItem[key] : false,
   getDataByKey: state => key => {
     let data
     if(key === 'fav' || key === 'trash'){
@@ -90,12 +89,9 @@ const mutations = {
     memo.splice(index, 1)
     eventBus.$emit('item','deleted')
   },
-  clearTrash({ memo }, items){
-    items.forEach(item => {
-      const index = memo.findIndex(i => i.id === item.id )
-      memo.splice(index, 1)
-    })
-    eventBus.$emit('item','cleared')
+  clearTrash(state){
+    const result = state.memo.filter(i => i.memo_is_trash == false)
+    state.memo = result
   },
   toggle({ toggle }, key){
     toggle[key] = !toggle[key]
@@ -136,9 +132,9 @@ const actions = {
     const res = await axios.post('/api/update/memo', item)
     commit('updateItem', res.data)
   },
-  async clearTrash({ commit }, items){
-    const res = await axios.post('/api/clear/trash', items)
-    commit('clearTrash', items)
+  async clearTrash({ commit }){
+    const res = await axios.post('/api/clear/trash')
+    commit('clearTrash')
   },
   toggle({ commit }, key){
     commit('toggle', key)

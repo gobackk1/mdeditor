@@ -2,25 +2,23 @@
   <div class="content" :class="fetchData.toggle.nav ? '_tgl-nav-true' : '_tgl-nav-false'">
     <nav class="nav">
       <ul class="nav__head nav-total">
-        <li @click="onClickTotalLink">
-          <RouterLink class="nav-total__link" :to="{name: 'Category', params:{id: 'all'}}" id="btn-all">
-            All<div class="nav-total__num">{{ numberOfAll }}</div>
-          </RouterLink>
-        </li>
-        <li @click="onClickTotalLink">
-          <RouterLink class="nav-total__link" :to="{name: 'Category', params:{id: 'fav'}}">
-            Favorite<div class="nav-total__num">{{ numberOfFav }}</div>
-          </RouterLink>
-        </li>
-        <li @click="onClickTotalLink" @click.right.prevent="onRightClickTrash">
-          <RouterLink class="nav-total__link" :to="{name: 'Category', params:{id: 'trash'}}">
-            Trash<div class="nav-total__num">{{ numberOfTrash }}</div>
+        <li
+          v-for="total in categoryTotal"
+          :key="total.elid"
+          @click="onClickTotalLink"
+          @click.right.prevent="onRightClick(total.key)"
+        >
+          <RouterLink
+            class="nav-total__link"
+            :to="{name: 'Category', params: {id: total.id}}"
+            :id="`btn-${total.id}`"
+          >{{ total.label }}<div class="nav-total__num">{{ getTotalNumberByKey(total.key) }}</div>
           </RouterLink>
         </li>
       </ul>
       <div class="nav__body">
         <h2 class="nav__ttl">CategoryList</h2>
-        <button type="button" class="create-category" @click="createCategory()" :disabled="btnDisabledFrag"><i class="fas fa-plus fa-lg"></i></button>
+        <button type="button" class="create-category" @click="createCategory" :disabled="btnDisabledFrag"><i class="fas fa-plus fa-lg"></i></button>
         <ul>
           <CategoryListItem
             v-for="category in fetchData.category"
@@ -46,39 +44,34 @@ import CategoryListItem from '../pages/editor/CategoryListItem'
     data(){
       return {
         fetchData:{},
+        categoryTotal:[
+          {
+            id:'all',
+            key:'all',
+            label:'All',
+          },
+          {
+            id:'fav',
+            key:'memo_is_fav',
+            label:'Favorite',
+          },
+          {
+            id:'trash',
+            key:'memo_is_trash',
+            label:'Trash',
+          },
+        ]
       }
     },
     created(){
       this.fetchData = this.$store.state.memodata
     },
-    updated(){
-      console.log('親のアップデート呼び出し')
-    },
     computed:{
-      numberOfAll(){
-        return this.getTotalNumberByKey('all')
-      },
-      numberOfFav(){
-        return this.getTotalNumberByKey('memo_is_fav')
-      },
-      numberOfTrash(){
-        return this.getTotalNumberByKey('memo_is_trash')
-      },
       btnDisabledFrag(){
         return this.$store.getters['auth/checkLog'] ? false : true
       }
     },
     methods:{
-      createCategory(){
-        const categoryName = prompt('カテゴリー名を入力して下さい。')
-        if(categoryName){
-          let req = {
-            name: categoryName,
-            userId: this.$store.getters['auth/userId']
-          }
-          this.setCategory(req)
-        }
-      },
       getTotalNumberByKey(key){
         if(!this.$store.state.memodata.category){
           return 0
@@ -99,13 +92,23 @@ import CategoryListItem from '../pages/editor/CategoryListItem'
         })
         return counter
       },
+      createCategory(){
+        const categoryName = prompt('カテゴリー名を入力して下さい。')
+        if(categoryName){
+          let req = {
+            name: categoryName,
+            userId: this.$store.getters['auth/userId']
+          }
+          this.setCategory(req)
+        }
+      },
       toggleNav(){
         this.toggle('nav')
       },
-      onRightClickTrash(){
+      onRightClick(key){
+        if(key !== 'memo_is_trash') return
         if(confirm('ゴミ箱のメモを全て削除してよろしいですか？')){
-          const clearItems = this.fetchData.memo.filter(i => i.memo_is_trash == true)
-          this.clearTrash(clearItems)
+          this.clearTrash()
         }
       },
       onClickTotalLink(){
@@ -130,12 +133,11 @@ import CategoryListItem from '../pages/editor/CategoryListItem'
 </script>
 
 <style scoped lang="scss">
-// @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css";
-  .v-enter-active,
-  {
+  .v-enter-active,{
     transition-property:opacity visibility;
     transition-duration:.5s;
   }
+
   .v-leave-active{
     display:none;
   }

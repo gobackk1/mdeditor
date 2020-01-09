@@ -30,7 +30,6 @@ export default {
         edit:false,
         folder:false
       },
-      color:'#ffffff'
     }
   },
   props:{
@@ -143,7 +142,7 @@ export default {
       margin:auto;
     }
     &__input{
-      &--name,&--color{
+      &--name, &--color{
         position: absolute;
         left: 30px;
         top: 0;

@@ -4,7 +4,7 @@
     <div
       v-for="memo in activeData"
       :key="memo.id"
-      v-show=" activeId === memo.id"
+      v-show="activeId === memo.id"
       class="memo"
       @click.right.prevent="onRightClickView"
     >

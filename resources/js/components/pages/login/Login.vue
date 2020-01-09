@@ -73,20 +73,16 @@
     },
     methods:{
       async register () {
-        // authストアのresigterアクションを呼び出す
         await this.$store.dispatch('auth/register', this.registerForm)
-
-        // トップページに移動する
         this.$router.push('/Category')
       },
       async login () {
-        // authストアのloginアクションを呼び出す
         await this.$store.dispatch('auth/login', this.loginForm)
         let req = {id:null}
         req.id = this.$store.getters['auth/userId']
-        this.afterAjax(req)
+        this.fetchItems(req)
       },
-      async afterAjax(req){
+      async fetchItems(req){
         await this.$store.dispatch('memodata/fetchItems', req)
         this.$router.push('/Category/all')
         document.getElementById('btn-all').click()
@@ -113,7 +109,6 @@
       border-top:1px solid;
       border-left:1px solid;
       border-right:1px solid;
-
       box-sizing:border-box;
       &._active{
         background: #f5f5f5;
