@@ -2,15 +2,15 @@
   <div class="toolbar">
     <button
       class="toolbar__btn--fav"
-      :class="checkCurrentItemProps('memo_is_fav', '_fav-is-true', '_fav-is-false')"
+      :class="setClazzByKeyProps('memo_is_fav', '_fav-is-true', '_fav-is-false')"
       type="button"
       @click="onClickFav(fetchData.currentItem.id)"
     >
-      <i class="fa-star fa-lg" :class="checkCurrentItemProps('memo_is_fav', 'fas', 'far')"></i>
+      <i class="fa-star fa-lg" :class="setClazzByKeyProps('memo_is_fav', 'fas', 'far')"></i>
     </button>
     <button
       class="toolbar__btn--del"
-      :class="checkCurrentItemProps('memo_is_trash', '_trash-is-true', '_trash-is-false')"
+      :class="setClazzByKeyProps('memo_is_trash', '_trash-is-true', '_trash-is-false')"
       type="button"
       @click="onClickTrash(fetchData.currentItem.id)"
     >
@@ -36,29 +36,14 @@
     created(){
       this.fetchData = this.$store.state.memodata
     },
-    // computed:{
-    //   checkCurrentItemProps(){
-    //     return (key, trueClazz, falseClazz) => {
-    //       let clazz
-    //       if(this.$store.getters['memodata/checkCurrentItemProps'](key) == true){
-    //         clazz = trueClazz
-    //       } else {
-    //         clazz = falseClazz
-    //       }
-    //       console.log('computed')
-    //       return clazz
-    //     }
-    //   },
-    // },
     methods:{
-      checkCurrentItemProps(key, trueClazz, falseClazz){
+      setClazzByKeyProps(key, trueClazz, falseClazz){
         let clazz
         if(this.$store.getters['memodata/checkCurrentItemProps'](key) == true){
           clazz = trueClazz
         } else {
           clazz = falseClazz
         }
-        console.log('methods')
         return clazz
       },
       onClickEdit(id){

@@ -7,14 +7,28 @@
     <button class="list-item__folder" type="button" @click="folderButton(category)">
       <i class="fas fa-folder fa-lg" :style="iconStyles"></i>
     </button>
-    <button class="list-item__edit--name" type="button" @click="editButton(category)">
+    <button class="list-item__edit--name" type="button" @click="editButton(category, $event)">
       <i class="fas fa-pen"></i>
       </button>
     <button class="list-item__edit--del" type="button" @click="deleteButton(category)">
       <i class="fas fa-times"></i>
     </button>
-    <input class="list-item__input--color" name="folder" type="color" v-if="toggle.folder" v-model="category.category_icon">
-    <input class="list-item__input--name" name="name" type="text" v-if="toggle.edit" v-model="category.category_name">
+    <input
+      class="list-item__input--color"
+      name="folder"
+      type="color"
+      v-if="toggle.folder"
+      v-model="category.category_icon"
+    >
+    <input
+      class="list-item__input--name"
+      name="name"
+      type="text"
+      v-if="toggle.edit"
+      v-model="category.category_name"
+      :data-cat-id="category.id"
+      @keydown.enter="onKeyDownEnter($event)"
+    >
   </li>
 </template>
 
@@ -55,13 +69,18 @@ export default {
         this.deleteCategory(category);
       }
     },
-    editButton(category){
+    editButton(category, ev){
       this.toggle.edit = !this.toggle.edit
       if(!this.toggle.edit) {
-        //不具合あり
-        // this.$nextTick(() => document.querySelector('[name="name"]').focus())
         this.updateCategory(category)
+      } else {
+        this.$nextTick(() => {
+          ev.target.parentElement.querySelector('[name="name"]').focus()
+        })
       }
+    },
+    onKeyDownEnter(ev){
+      ev.target.parentElement.querySelector('.list-item__edit--name').click()
     },
     folderButton(category){
       this.toggle.folder = !this.toggle.folder
@@ -85,6 +104,9 @@ export default {
       opacity:1;
       visibility:visible;
       transition:.5s;
+    }
+    i{
+      pointer-events:none;
     }
   }
   .list-item{
