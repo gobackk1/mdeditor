@@ -15,22 +15,44 @@ const mutations = {
 }
 
 const actions = {
-  async register ({ commit }, data) {
-    const res = await axios.post('/api/register', data)
-    commit('setUser', res.data)
+  register ({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      axios.post('/api/register', data).
+        then(res => {
+          commit('setUser', res.data)
+          resolve()
+        })
+    })
   },
-  async login ({ commit }, data) {
-    const res = await axios.post('/api/login', data)
-    commit('setUser', res.data)
+  // async/awaitを使うなら
+  // async register ({ commit }, data) {
+  //   const res = await axios.post('/api/register', data)
+  //   commit('setUser', res.data)
+  // },
+  login ({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      axios.post('/api/login', data).then(res => {
+        commit('setUser', res.data)
+        resolve()
+      })
+    })
   },
-  async logout ({ commit }) {
-    const res = await axios.post('/api/logout')
-    commit('setUser', null)
+  logout ({ commit }) {
+    return new Promise((resolve, reject) => {
+      axios.post('/api/logout').then(res => {
+        commit('setUser', null)
+        resolve()
+      })
+    })
   },
-  async currentUser ({ commit }) {
-    const res = await axios.get('/api/user')
-    const user = res.data || null
-    commit('setUser', user)
+  currentUser ({ commit }) {
+    return new Promise((resolve, reject) => {
+      axios.get('/api/user').then(res => {
+        const user = res.data || null
+        commit('setUser', user)
+        resolve()
+      })
+    })
   }
 }
 

@@ -15,20 +15,23 @@ const xsrfField = () => {
   })
 }
 
-const createApp = async () => {
-  await store.dispatch('auth/currentUser')
-  let req = {id:null}
-  req.id = store.getters['auth/userId']
-  fetchData(req)
+const createApp = () => {
+  console.log(store)
+  store.dispatch('auth/currentUser').then(() => {
+    let req = {id: store.getters['auth/userId']}
+    fetchData(req)
+  })
 }
 
-const fetchData = async (id) => {
-  await store.dispatch('memodata/fetchItems', id)
-  window.vm = new Vue ({
-    el:'#app',
-    router,
-    store,
-    render: h => h(App),
+const fetchData = req => {
+  console.log(store)
+  store.dispatch('memodata/fetchItems', req).then(() => {
+    window.vm = new Vue ({
+      el:'#app',
+      router,
+      store,
+      render: h => h(App),
+    })
   })
 }
 

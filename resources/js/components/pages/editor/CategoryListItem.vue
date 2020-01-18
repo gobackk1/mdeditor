@@ -2,7 +2,7 @@
   <li class="list-item" v-if="fetchData" @click="onClickLink">
     <RouterLink :to="{ name:'Category', params: {id: category.id}}" class="list-item__link">
       <span class="list-item__text">{{ category.category_name }}</span>
-      <span class="list-item__num">{{ category.category_has_memo() }}</span>
+      <span class="list-item__num">{{ category.showTotalNum() }}</span>
     </RouterLink>
     <button class="list-item__folder" type="button" @click="folderButton(category)">
       <i class="fas fa-folder fa-lg" :style="iconStyles"></i>

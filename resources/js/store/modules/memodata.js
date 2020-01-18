@@ -2,7 +2,7 @@ import axios from 'axios'
 import { eventBus } from '../../app'
 
 const setFunc = index =>{
-  state.category[index].category_has_memo = () => {
+  state.category[index].showTotalNum = () => {
     const id = state.category[index].id
     const items = state.memo.filter(i => i.category_id == id && i.memo_is_trash == false)
     return items.length
@@ -99,9 +99,13 @@ const mutations = {
 }
 
 const actions = {
-  async fetchItems({ commit }, id){
-    const res = await axios.post('/api/userdata', id)
-    commit('fetchItems', res.data)
+  fetchItems({ commit }, id){
+    return new Promise ((resolve, reject) => {
+      axios.post('/api/userdata', id).then(res => {
+        commit('fetchItems', res.data)
+        resolve()
+      })
+    })
   },
   clearItems({ commit }){
     commit('clearItems')
@@ -112,29 +116,29 @@ const actions = {
   setCurrentCategory({ commit },id){
     commit('setCurrentCategory',id)
   },
-  async setCategory({ commit }, data){
-    const res = await axios.post('/api/create/category',data)
-    commit('storeCategory', res.data)
+  setCategory({ commit }, data){
+    axios.post('/api/create/category',data)
+      .then(res => commit('storeCategory', res.data))
   },
-  async updateCategory({ commit }, item){
-    const res = await axios.post('/api/update/category', item)
-    commit('updateCategory', res.data)
+  updateCategory({ commit }, item){
+    axios.post('/api/update/category', item)
+      .then(res => commit('updateCategory', res.data))
   },
-  async deleteCategory({ commit }, category){
-    const res = await axios.post('/api/delete/category', category)
-    commit('deleteCategory', res.data)
+  deleteCategory({ commit }, category){
+    axios.post('/api/delete/category', category)
+      .then(res => commit('deleteCategory', res.data))
   },
-  async createItem({ commit }, item){
-    const res = await axios.post('/api/create/memo', item)
-    commit('storeItem', res.data)
+  createItem({ commit }, item){
+    axios.post('/api/create/memo', item)
+      .then(res => commit('storeItem', res.data))
   },
-  async updateItem({ commit }, item){
-    const res = await axios.post('/api/update/memo', item)
-    commit('updateItem', res.data)
+  updateItem({ commit }, item){
+    axios.post('/api/update/memo', item)
+      .then(res => commit('updateItem', res.data))
   },
-  async clearTrash({ commit }){
-    const res = await axios.post('/api/clear/trash')
-    commit('clearTrash')
+  clearTrash({ commit }){
+    axios.post('/api/clear/trash')
+      .then(() => commit('clearTrash'))
   },
   toggle({ commit }, key){
     commit('toggle', key)

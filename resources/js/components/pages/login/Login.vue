@@ -72,20 +72,24 @@
       }
     },
     methods:{
-      async register () {
-        await this.$store.dispatch('auth/register', this.registerForm)
-        this.$router.push('/Category')
+      register () {
+        this.$store.dispatch('auth/register', this.registerForm).then(() => {
+          this.$router.push('/Category')
+        })
       },
-      async login () {
-        await this.$store.dispatch('auth/login', this.loginForm)
-        let req = {id:null}
-        req.id = this.$store.getters['auth/userId']
-        this.fetchItems(req)
+      login () {
+        this.$store.dispatch('auth/login', this.loginForm).then(() => {
+          let req = {
+            id: this.$store.getters['auth/userId']
+          }
+          this.fetchItems(req)
+        })
       },
-      async fetchItems(req){
-        await this.$store.dispatch('memodata/fetchItems', req)
-        this.$router.push('/Category/all')
-        document.getElementById('btn-all').click()
+      fetchItems(req){
+        this.$store.dispatch('memodata/fetchItems', req).then(() => {
+          this.$router.push('/Category/all')
+          document.getElementById('btn-all').click()
+        })
       }
     }
   }

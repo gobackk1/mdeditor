@@ -9,6 +9,7 @@
       </ul>
       <ul class="hdr-link" v-else>
         <li><RouterLink to="/login" class="hdr-link__item btn-login">login</RouterLink></li>
+        <li class="hdr-link__item"><button type="button" class="btn-menu" @click="onClickMenuBtn"><i class="fas fa-ellipsis-v"></i></button></li>
       </ul>
       <nav class="header__menu menu" v-show="$store.state.memodata.toggle.menu">
         <ul class="">
@@ -42,10 +43,11 @@
       }
     },
     methods:{
-      async logout () {
-        await this.$store.dispatch('auth/logout')
-        this.clearItems()
-        this.$router.push('/')
+      logout () {
+        this.$store.dispatch('auth/logout').then(() => {
+          this.clearItems()
+          this.$router.push('/')
+        })
       },
       onClickMenuBtn(){
         this.toggle('menu')
