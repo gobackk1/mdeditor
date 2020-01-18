@@ -60,6 +60,7 @@
 - [ ] メニューの操作をもっとスマートに
 - [ ] ログイン失敗時にテキストをだす
 - [ ] ログイン状態の記憶（remenber token）
+- [ ] 新規登録時は、チュートリアルのカテゴリとメモを作成して返す
 
 
 ## リファクタリング、ブラッシュアップ
@@ -89,3 +90,6 @@ https://qiita.com/sskmy1024y/items/c2e434941400bd4ee82c
 - RegisterUser.phpの`email`を`name`へ
 - index.blade.phpの jsとcss を絶対パスへ
 - webpack.mix.js 編集して、ビルド時にバージョンを付与しないように
+
+## 反省
+- プロパティ名が冗長だった。`memo.memo_title`は`memo.title`でよかった

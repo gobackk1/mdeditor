@@ -4,7 +4,7 @@
       <input type="text" class="editor__search" @input="onChangeSearchInput" placeholder="検索">
       <div class="editor__list-area">
         <h2>MemoList</h2>
-        <button type="button" class="create-memo" @click="onClickBtn()"><i class="far fa-edit fa-lg"></i></button>
+        <button type="button" class="create-memo" @click="onClickBtn()" :disabled="clickBtnDisabledProp"><i class="far fa-edit fa-lg"></i></button>
           <ul id="memo-list">
         <transition-group name="list">
             <li
@@ -13,7 +13,7 @@
               @click="onClickItem(memo)"
               :class="{ 'js-active': activeId === memo.id}"
               tabindex="0"
-            >{{ memo.memo_title }}</li>
+            >{{ memoTitle(memo.id) }}</li>
         </transition-group>
           </ul>
       </div>
@@ -54,6 +54,13 @@ export default {
   computed:{
     activeId(){
       return this.fetchData.currentItem ? this.fetchData.currentItem.id : 0
+    },
+    clickBtnDisabledProp(){
+      const flag = /all|fav|trash/.test(this.$route.params.id)
+      return flag ? true : false
+    },
+    memoTitle(){
+      return id => this.$store.getters['memodata/getItemTitleById'](id)
     }
   },
   methods:{
@@ -64,15 +71,16 @@ export default {
       this.setCurrentItem(item)
     },
     onClickBtn(){
-      const memoTitle = prompt('タイトルを入力して下さい。')
+      // const memoTitle = prompt('タイトルを入力して下さい。')
       const memo = {
-        memoTitle: memoTitle,
+        memoTitle: 'null',
         categoryId: this.$route.params.id,
         userId: this.$store.getters['auth/userId'],
       }
-      if(memoTitle){
-        this.createItem(memo)
-      }
+      // if(memoTitle){
+      //   this.createItem(memo)
+      // }
+      this.createItem(memo)
     },
     onChangeSearchInput(e){
       const val = e.target.value
@@ -121,6 +129,7 @@ export default {
     }
     &__list{
       width: 250px;
+      min-width:250px;
       background: #FAFAFA;
       padding:10px;
       height: calc(100vh - 36px);
@@ -148,6 +157,10 @@ export default {
     position: relative;
     border-bottom: 1px solid #ccc;
     cursor:pointer;
+    color:#9a9a9a;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
     &::before{
       // display:none;
       font-family: "Font Awesome 5 free";
@@ -166,8 +179,9 @@ export default {
   }
   .js-active{
     background:#cacaca;
+    color:#5d5d5d;
   }
-  button{
+  .create-memo{
     background:none;
     border:none;
     color:inherit;
@@ -175,10 +189,11 @@ export default {
     top: 0px;
     right: 0px;
     transition:.3s;
-    cursor:pointer;
-
-    &:hover{
-      transform:scale(1.2);
+    color:#cacaca;
+    cursor:auto;
+    &:not([disabled]){
+      cursor:pointer;
+      color:#333;
     }
   }
 </style>

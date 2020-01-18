@@ -173,6 +173,7 @@ import CategoryListItem from '../pages/editor/CategoryListItem'
     padding:10px;
     height: calc(100vh - 36px);
     width: 250px;
+    min-width:250px;
     &__ttl{
       margin-bottom: 20px;
       font-weight: bold;

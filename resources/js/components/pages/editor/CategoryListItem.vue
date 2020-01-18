@@ -149,14 +149,14 @@ export default {
       &--name{
         @extend %list-item__edit;
         position: absolute;
-        right: 40px;
+        right: 50px;
         top: 0;
         bottom: 0;
       }
       &--del{
         @extend %list-item__edit;
         position: absolute;
-        right: 20px;
+        right: 30px;
         top: 0;
         bottom: 0;
       }
@@ -166,7 +166,7 @@ export default {
       right: 10px;
       top: 0;
       bottom: 0;
-      height: 20px;
+      height: 16px;
       margin:auto;
     }
     &__input{

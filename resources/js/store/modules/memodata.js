@@ -34,6 +34,16 @@ const getters = {
       data = state.memo.filter(i => i.category_id == key && i.memo_is_trash == false)
     }
     return data
+  },
+  getItemTitleById: state => id => {
+    const index = state.memo.findIndex(i => i.id === id)
+    let body = state.memo[index].memo_body
+    if(/#*\s/.test(body)){
+      body = body.replace(/#*\s/, '')
+    }
+    const checkNewLine = /\r\n|\r|\n/.exec(body)
+    const sliceIndex = checkNewLine ? checkNewLine.index : 30
+    return body !== '' ? body.slice(0, sliceIndex) : 'empty title'
   }
 }
 

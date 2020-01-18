@@ -1,5 +1,6 @@
 <template>
   <div class="toolbar">
+    <div class="toolbar__memo-title">{{memoTitle(fetchData.currentItem.id)}}</div>
     <button
       class="toolbar__btn--fav"
       :class="setClazzByKeyProps('memo_is_fav', '_fav-is-true', '_fav-is-false')"
@@ -35,6 +36,11 @@
     },
     created(){
       this.fetchData = this.$store.state.memodata
+    },
+    computed:{
+      memoTitle(){
+        return id => this.$store.getters['memodata/getItemTitleById'](id)
+      }
     },
     methods:{
       setClazzByKeyProps(key, trueClazz, falseClazz){
@@ -109,6 +115,12 @@
     }
     &__category{
       float:left;
+    }
+    &__memo-title{
+      float:left;
+      padding: 10px 0;
+      color:#9a9a9a;
+      font-size: 18px;
     }
     &__btn{
       &--fav{
