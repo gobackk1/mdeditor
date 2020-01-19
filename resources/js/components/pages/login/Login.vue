@@ -73,7 +73,7 @@
     },
     methods:{
       register () {
-        this.$store.dispatch('auth/register', this.registerForm).then(() => {
+          this.$store.dispatch('auth/register', this.registerForm).then(() => {
           this.$router.push('/Category')
         })
       },
@@ -83,6 +83,7 @@
             id: this.$store.getters['auth/userId']
           }
           this.fetchItems(req)
+          document.getElementById('btn-all').click()
         })
       },
       fetchItems(req){

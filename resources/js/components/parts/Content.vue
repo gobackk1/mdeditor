@@ -19,7 +19,7 @@
       <div class="nav__body">
         <h2 class="nav__ttl">CategoryList</h2>
         <button type="button" class="create-category" @click="createCategory" :disabled="btnDisabledFrag"><i class="fas fa-plus fa-lg"></i></button>
-        <ul>
+        <ul class="category-list">
           <CategoryListItem
             v-for="category in fetchData.category"
             :key="category.id"
@@ -109,13 +109,27 @@ import CategoryListItem from '../pages/editor/CategoryListItem'
         if(key !== 'memo_is_trash') return
         if(confirm('ゴミ箱のメモを全て削除してよろしいですか？')){
           this.clearTrash()
+          // this.$store.state.memodata.currentItem = {
+          //   memo_body:'',
+          // }
+          document.getElementById('btn-all').click()
         }
       },
       onClickTotalLink(){
         if(!this.$store.getters['auth/checkLog']) {
           return
         }
-        const items = this.$store.getters['memodata/getDataByKey'](this.$route.params.id)
+        let items = this.$store.getters['memodata/getDataByKey'](this.$route.params.id)
+        if(items.length === 0){
+          items = [
+            {
+              memo_body: '',
+              memo_title: '',
+              memo_is_fav: false,
+              memo_is_trash: false,
+            }
+          ]
+        }
         this.setCurrentItem(items[0])
       },
       ...mapActions('memodata',[
@@ -171,7 +185,7 @@ import CategoryListItem from '../pages/editor/CategoryListItem'
     background:#232628;
     color:#c5c5c5;
     padding:10px;
-    height: calc(100vh - 36px);
+    height: calc(100vh - 37px);
     width: 250px;
     min-width:250px;
     &__ttl{
@@ -184,7 +198,7 @@ import CategoryListItem from '../pages/editor/CategoryListItem'
     }
     &__body{
       position:relative;
-      height: 100%;
+      height: calc(100% - 160px);
     }
     &__toggle{
       position: absolute;
@@ -205,6 +219,11 @@ import CategoryListItem from '../pages/editor/CategoryListItem'
         transform:rotate(180deg);
       }
     }
+  }
+
+  .category-list{
+    overflow-y:scroll;
+    height: calc(100% - 30px);
   }
 
   .nav-total{

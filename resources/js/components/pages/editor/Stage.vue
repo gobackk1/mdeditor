@@ -6,7 +6,6 @@
       :key="memo.id"
       v-show="activeId === memo.id"
       class="memo"
-      @click.right.prevent="onRightClickView"
     >
       <textarea name="body" v-model="memo.memo_body" v-show="fetchData.toggle.editor"></textarea>
       <MarkDownBody :content="memo.memo_body" v-show="!fetchData.toggle.editor"></MarkDownBody>
@@ -43,7 +42,8 @@
     },
     methods:{
       onRightClickView(){
-        this.editButton.click()
+        // 開発中はオフ
+        // this.editButton.click()
       },
     },
     components:{

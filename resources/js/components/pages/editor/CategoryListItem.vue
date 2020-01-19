@@ -63,12 +63,14 @@ export default {
   },
   methods:{
     onClickLink(){
-      const items = this.$store.getters['memodata/getDataByKey'](this.$route.params.id)
-      this.setCurrentItem(items[0])
+      const [item] = this.$store.getters['memodata/getDataByKey'](this.$route.params.id)
+      if(!item) return
+      this.setCurrentItem(item)
     },
     deleteButton(category){
       if(confirm('カテゴリーを削除しても良いですか？カテゴリーに属すメモも同時に削除されます。（ゴミ箱に残りません）')){
         this.deleteCategory(category);
+        document.getElementById('btn-all').click()
       }
     },
     editButton(category, ev){

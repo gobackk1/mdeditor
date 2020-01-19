@@ -5,7 +5,7 @@
       <div class="editor__list-area">
         <h2>MemoList</h2>
         <button type="button" class="create-memo" @click="onClickBtn()" :disabled="clickBtnDisabledProp"><i class="far fa-edit fa-lg"></i></button>
-          <ul id="memo-list">
+          <ul class="memo-list">
         <transition-group name="list">
             <li
               v-for="memo in activeData"
@@ -132,16 +132,17 @@ export default {
       min-width:250px;
       background: #FAFAFA;
       padding:10px;
-      height: calc(100vh - 36px);
+      height: calc(100vh - 37px);
       border-right:1px solid #eaeaea;
       resize: horizontal;
-      overflow:hidden;
+      overflow:hidden;//resizeのため
       position:relative;
       box-sizing:border-box;
     }
     &__list-area{
       position:relative;
       color:#555;
+      height: calc(100% - 55px);
     }
     &__stage{
       flex:auto;
@@ -153,7 +154,7 @@ export default {
   }
   li{
     display: block;
-    padding: 10px 10px 10px 20px;
+    padding: 10px 10px 10px 25px;
     position: relative;
     border-bottom: 1px solid #ccc;
     cursor:pointer;
@@ -161,6 +162,8 @@ export default {
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+    min-height: 37px;
+    box-sizing:border-box;
     &::before{
       // display:none;
       font-family: "Font Awesome 5 free";
@@ -170,12 +173,16 @@ export default {
       top: 0;
       bottom: 0;
       left: 0px;
-      margin:auto;
+      margin:auto 5px;
       height: 16px;
     }
     &:not(.js-active):hover{
       background:#e8e8e8;
     }
+  }
+  .memo-list{
+    height: calc(100% - 25px);
+    overflow-y:scroll;
   }
   .js-active{
     background:#cacaca;

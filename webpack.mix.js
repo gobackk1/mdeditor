@@ -1,4 +1,33 @@
 const mix = require('laravel-mix');
+// mix.webpackConfig({
+//   module: {
+//     resolve: {
+//       alias: {
+//         'vue$': 'vue/dist/vue.common.js'
+//       }
+//     },
+//     rules: [
+//       {
+//         test: /\.vue$/,
+//         loader: 'vue-loader',
+//         options: {
+//           loaders: {
+//             css: {
+//               loader: 'css-loader',
+//             },
+//             scss: {
+//               loader: 'sass-loader',
+//               options: {
+//                 data: '@import "abstracts.scss";',
+//                 includePaths: './resources/sass/abstracts/abstracts.scss',
+//               }
+//             },
+//           }
+//         },
+//       }
+//     ]
+//   }
+// });
 
 mix.sass('resources/sass/app.scss', 'public/css')
   .options({

@@ -61,6 +61,7 @@
 </script>
 
 <style scoped lang="scss">
+  // @import "../../../sass/abstracts/abstracts.scss";
   .header{
     position: relative;
     background:#222222;
@@ -72,6 +73,7 @@
     &__ttl{
       float:left;
       font-weight: bold;
+      // color:$color;
     }
     &__menu{
       position: absolute;

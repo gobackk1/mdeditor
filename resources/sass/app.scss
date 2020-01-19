@@ -2,6 +2,13 @@
 // Variables
 @import 'variables';
 @import 'reset';
+@import '_github_md';
+@import 'night_owl';
+
+
+*, *::before, *::after{
+  box-sizing: border-box;
+}
 
 a{
   color: inherit;
@@ -42,13 +49,5 @@ button{
   }
   ul{
     list-style:disc;
-  }
-}
-
-@mixin cf(){
-  &::after{
-    content:'';
-    display: block;
-    clear:both;
   }
 }

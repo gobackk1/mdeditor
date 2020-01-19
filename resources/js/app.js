@@ -16,7 +16,6 @@ const xsrfField = () => {
 }
 
 const createApp = () => {
-  console.log(store)
   store.dispatch('auth/currentUser').then(() => {
     let req = {id: store.getters['auth/userId']}
     fetchData(req)
@@ -24,7 +23,6 @@ const createApp = () => {
 }
 
 const fetchData = req => {
-  console.log(store)
   store.dispatch('memodata/fetchItems', req).then(() => {
     window.vm = new Vue ({
       el:'#app',

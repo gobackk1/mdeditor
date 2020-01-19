@@ -36,6 +36,7 @@ const getters = {
     return data
   },
   getItemTitleById: state => id => {
+    if(id === 'undefined') return
     const index = state.memo.findIndex(i => i.id === id)
     let body = state.memo[index].memo_body
     if(/#*\s/.test(body)){
